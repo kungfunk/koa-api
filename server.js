@@ -6,6 +6,12 @@ var userController = require('./user-controller.js');
 
 var app = koa();
 
+app.use(config.router.get('/login', function *() {
+    this.body = config.jwt.sign({ username : 'victor', password : 'victor' }, config.privateKey, {algorithm: 'RS256'});
+}));
+
+app.use(config.jwt({ secret: config.publicKey, algorithm: 'RS256' }));
+
 app.use(config.router.get('/users', userController.findAll));
 app.use(config.router.post('/users', userController.create));
 app.use(config.router.get('/users/:username', userController.getByUsername));
