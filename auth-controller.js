@@ -25,8 +25,8 @@ controller.checkCredentials = function *() {
             };
         }
         else {
-            console.log('Incorrect password');
-            this.body = { loggedIn : false };
+            this.status = 401;
+            this.body = "Incorrect password";
         }
     }
     catch(e) {
