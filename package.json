@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^0.8.5",
     "co-body": "^4.0.0",
+    "kcors": "^1.0.1",
     "kerberos": "0.0.17",
     "koa": "^1.1.2",
     "koa-jwt": "^1.1.1",

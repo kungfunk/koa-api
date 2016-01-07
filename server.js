@@ -1,14 +1,15 @@
 'use strict';
 
 var koa = require('koa');
+var cors = require('kcors');
 var config = require('./config.js');
+var authController = require('./auth-controller.js');
 var userController = require('./user-controller.js');
 
 var app = koa();
+app.use(cors());
 
-app.use(config.router.get('/login', function *() {
-    this.body = config.jwt.sign({ username : 'victor', password : 'victor' }, config.privateKey, {algorithm: 'RS256'});
-}));
+app.use(config.router.post('/auth', authController.checkCredentials));
 
 app.use(config.jwt({ secret: config.publicKey, algorithm: 'RS256' }));
 

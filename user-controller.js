@@ -1,30 +1,33 @@
 'use strict';
 
 const config = require('./config.js');
-const dbTable = 'users';
+const userService = require('./user-service.js');
+const authService = require('./auth-service.js');
 
 var controller = module.exports = {};
 
 controller.findAll = function *() {
-    this.body = yield config.db.get(dbTable).find({});
+    this.body = yield userService.findAll();
 };
 
 controller.getByUsername = function *(username) {
-    this.body = yield config.db.get(dbTable).findOne({username : username});
+    this.body = yield userService.getByUsername(username);
 };
 
 controller.deleteByUsername = function *(username) {
-    var result = yield config.db.get(dbTable).remove({username : username});
+    var result = yield userService.deleteByUsername(username);
     this.body = { result : result > 0 };
 };
 
 controller.updateByUsername = function *(username) {
     var data = yield config.parser(this);
-    var result = yield config.db.get(dbTable).update({username : username}, data);
+    data.password = authService.hashPassword(data.password);
+    var result = yield userService.updateByUsername(username, data);
     this.body = { result : result === 1 };
 };
 
 controller.create = function *() {
     var data = yield config.parser(this);
-    this.body = yield config.db.get(dbTable).insert(data);
+    data.password = authService.hashPassword(data.password);
+    this.body = yield userService.create(data);
 };
