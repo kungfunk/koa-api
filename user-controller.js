@@ -27,6 +27,7 @@ controller.updateByUsername = function *(username) {
 };
 
 controller.create = function *() {
+    console.log('create new user');
     var data = yield config.parser(this);
     data.password = authService.hashPassword(data.password);
     this.body = yield userService.create(data);

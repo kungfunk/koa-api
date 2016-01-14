@@ -7,6 +7,7 @@ const userService = require('./user-service.js');
 var controller = module.exports = {};
 
 controller.checkCredentials = function *() {
+    console.log('auth try');
     try {
         var data = yield config.parser(this);
         if(!data.username || !data.password)
@@ -26,7 +27,7 @@ controller.checkCredentials = function *() {
         }
         else {
             this.status = 401;
-            this.body = "Incorrect password";
+            this.body = 'Incorrect password';
         }
     }
     catch(e) {
